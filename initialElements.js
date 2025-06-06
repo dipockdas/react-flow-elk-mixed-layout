@@ -1,92 +1,90 @@
 // initialElements.js
 
 export const initialNodes = [
-  // Parent Node
-  {
-    id: 'A',
-    type: 'default',
-    data: { label: 'Parent Node (Horizontal)' },
-    position: { x: 0, y: 0 },
-    // A parent node needs a style with dimensions for ELK
-    style: {
-      width: 450,
-      height: 150,
-      backgroundColor: 'rgba(255, 0, 0, 0.1)',
-      border: '1px solid red',
-      display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
-      padding: '8px 12px',
-      fontSize: '12px',
-      fontWeight: 'bold',
-    },
-    // Add layout options for the children of this node
+  // Top-level containers
+  { id: 'vpc-1', type: 'default', data: { label: 'VPC' }, nodeType: 'vpc', position: { x: 0, y: 0 }, style: { 
+    width: 600, 
+    height: 400,
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: '8px 12px',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(26, 120, 186, 0.1)',
+    border: '2px solid #1a78ba'
+  } },
+  { id: 'subnet-1', type: 'default', data: { label: 'Subnet A (Horizontal)' }, nodeType: 'subnet', parentNode: 'vpc-1', position: { x: 0, y: 0 }, style: { 
+    width: 500, 
+    height: 250,
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: '8px 12px',
+    fontSize: '12px',
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(26, 186, 137, 0.1)',
+    border: '2px solid #1aba89'
+  },
     layoutOptions: {
       'elk.algorithm': 'layered',
       'elk.direction': 'RIGHT',
-      'elk.spacing.nodeNode': '50',
+      'elk.spacing.nodeNode': '70',
     },
   },
 
-  // Child nodes of Parent A
-  {
-    id: 'A-1',
-    type: 'input',
-    data: { label: 'Child 1' },
-    position: { x: 0, y: 0 },
-    parentNode: 'A',
-    extent: 'parent',
-  },
-  {
-    id: 'A-2',
-    data: { label: 'Child 2' },
-    position: { x: 0, y: 0 },
-    parentNode: 'A',
-    extent: 'parent',
-  },
-  {
-    id: 'A-3',
-    type: 'output',
-    data: { label: 'Child 3' },
-    position: { x: 0, y: 0 },
-    parentNode: 'A',
-    extent: 'parent',
-  },
-
-  // Other nodes at the top level
-  {
-    id: 'B',
-    type: 'input',
-    data: { label: 'Start Node' },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: 'C',
-    data: { label: 'Middle Node' },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: 'D',
-    type: 'output',
-    data: { label: 'End Node 1' },
-    position: { x: 0, y: 0 },
-  },
-    {
-    id: 'E',
-    type: 'output',
-    data: { label: 'End Node 2' },
-    position: { x: 0, y: 0 },
-  },
+  // Nodes within the subnet
+  { id: 'ec2-1', data: { label: 'EC2 Instance 1' }, nodeType: 'ec2', parentNode: 'subnet-1', position: { x: 0, y: 0 }, style: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: '6px 8px',
+    fontSize: '11px',
+    fontWeight: 'normal',
+    backgroundColor: 'rgba(255, 153, 0, 0.2)',
+    border: '1px solid #ff9900'
+  } },
+  { id: 'ec2-2', data: { label: 'EC2 Instance 2' }, nodeType: 'ec2', parentNode: 'subnet-1', position: { x: 0, y: 0 }, style: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: '6px 8px',
+    fontSize: '11px',
+    fontWeight: 'normal',
+    backgroundColor: 'rgba(255, 153, 0, 0.2)',
+    border: '1px solid #ff9900'
+  } },
+  { id: 'rds-1', data: { label: 'RDS Database' }, nodeType: 'rds', parentNode: 'subnet-1', position: { x: 0, y: 0 }, style: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: '6px 8px',
+    fontSize: '11px',
+    fontWeight: 'normal',
+    backgroundColor: 'rgba(153, 51, 204, 0.2)',
+    border: '1px solid #9933cc'
+  } },
+  
+  // An external node
+  { id: 'user', data: { label: 'End User' }, nodeType: 'user', position: { x: 0, y: 0 }, style: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: '6px 8px',
+    fontSize: '11px',
+    fontWeight: 'normal',
+    backgroundColor: 'rgba(128, 128, 128, 0.1)',
+    border: '1px solid #808080'
+  } },
 ];
 
 export const initialEdges = [
-  // Connections for the main vertical layout
-  { id: 'b-a', source: 'B', target: 'A' },
-  { id: 'a-c', source: 'A', target: 'C' },
-  { id: 'c-d', source: 'C', target: 'D' },
-  { id: 'c-e', source: 'C', target: 'E' },
-
-  // Connections for the horizontal children inside Parent A
-  { id: 'a1-a2', source: 'A-1', target: 'A-2', type: 'smoothstep' },
-  { id: 'a2-a3', source: 'A-2', target: 'A-3', type: 'smoothstep' },
+  // Connection from the outside world to the VPC
+  { id: 'user-to-vpc', source: 'user', target: 'vpc-1' },
+  
+  // This edge will be laid out horizontally inside the subnet
+  { id: 'ec2-1-to-ec2-2', source: 'ec2-1', target: 'ec2-2' },
+  
+  // This edge will trigger our vertical grouping rule
+  { id: 'ec2-2-to-rds', source: 'ec2-2', target: 'rds-1' }
 ];
